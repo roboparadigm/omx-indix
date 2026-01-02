@@ -12,10 +12,12 @@ joint_state_broadcaster:
 arm_position_controller:
   ros__parameters:
     joints:
-      - shoulder_pan_joint
-      - shoulder_lift_joint
-      - elbow_joint
-      - wrist_roll_joint
+      - joint1
+      - joint2
+      - joint3
+      - joint4
+      - joint5
+      - joint6
     command_interfaces:
       - position
     state_interfaces:

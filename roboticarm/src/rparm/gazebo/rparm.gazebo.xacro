@@ -33,6 +33,7 @@
   <xacro:Link reference="${prefix}link3"/>
   <xacro:Link reference="${prefix}link4"/>
   <xacro:Link reference="${prefix}link5"/>
+  <xacro:Link reference="${prefix}link5_roll"/>
 
   <xacro:Link reference="${prefix}gripper_left_link"/>
   <xacro:Link reference="${prefix}gripper_right_link"/>
@@ -44,8 +45,12 @@
   <xacro:SimpleTransmission trans="${prefix}trans2" joint="${prefix}joint2" actuator="${prefix}actuator2" />
   <xacro:SimpleTransmission trans="${prefix}trans3" joint="${prefix}joint3" actuator="${prefix}actuator3" />
   <xacro:SimpleTransmission trans="${prefix}trans4" joint="${prefix}joint4" actuator="${prefix}actuator4" />
-  <xacro:SimpleTransmission trans="${prefix}trans5" joint="${prefix}gripper_left_joint" actuator="${prefix}actuator5" />
-  <xacro:SimpleTransmission trans="${prefix}trans6" joint="${prefix}gripper_right_joint" actuator="${prefix}actuator6" />
+  <xacro:SimpleTransmission trans="${prefix}trans5" joint="${prefix}joint5" actuator="${prefix}actuator5" />
+  <xacro:SimpleTransmission trans="${prefix}trans6" joint="${prefix}joint6" actuator="${prefix}actuator6" />
+  <xacro:SimpleTransmission trans="${prefix}trans7" joint="${prefix}gripper_right_joint" actuator="${prefix}actuator7" />
+
+  <!-- Mimic right gripper finger in sim (Harmonic / Ignition Gazebo). Keep controller at 6 joints. -->
+  <!-- No mimic plugin; control right finger directly in sim via ros2_control. -->
 
   </xacro:macro>
 

@@ -113,19 +113,12 @@ def generate_launch_description():
         output='screen',
     )
 
-    gripper_controller_spawner = Node(
-        package='controller_manager',
-        executable='spawner',
-        arguments=['gripper_controller'],
-        output='screen',
-    )
-
     ready_pub = ExecuteProcess(
         cmd=[
             'ros2', 'topic', 'pub', '--once', '/arm_controller/joint_trajectory',
             'trajectory_msgs/JointTrajectory',
             '{joint_names:["joint1","joint2","joint3","joint4","joint5","joint6"],'
-            ' points:[{positions:[3.139,3.317,3.567,2.097,3.141,5.809], time_from_start:{sec:6,nanosec:0}}]}'
+            ' points:[{positions:[0.0,0.4,-0.6,0.4,0.0,0.0], time_from_start:{sec: 6, nanosec: 0}}]}'
         ],
         output='screen',
     )
@@ -147,7 +140,7 @@ def generate_launch_description():
         RegisterEventHandler(
             event_handler=OnProcessExit(
                 target_action=joint_state_broadcaster_spawner,
-                on_exit=[arm_controller_spawner, gripper_controller_spawner],
+                on_exit=[arm_controller_spawner],
             )
         ),
         RegisterEventHandler(

@@ -20,7 +20,7 @@
     <child link="$(arg prefix)link1"/>
   </joint>
 
-  <xacro:rparm_arm prefix="$(arg prefix)" />
+  <xacro:rparm_arm prefix="$(arg prefix)" use_sim="$(arg use_sim)" />
   <xacro:rparm_gazebo prefix="$(arg prefix)" />
 
   <xacro:rparm_system

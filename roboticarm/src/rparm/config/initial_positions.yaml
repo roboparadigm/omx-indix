@@ -6,5 +6,6 @@
         joint2: 0.0
         joint3: 0.0
         joint4: 0.0
-        gripper: 0.0
+        joint5: 0.0
+        joint6: 0.0
       action_topic: '/arm_controller/follow_joint_trajectory'

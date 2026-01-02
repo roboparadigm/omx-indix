@@ -46,7 +46,7 @@ def generate_launch_description():
             'ros2', 'topic', 'pub', '--once', '/arm_controller/joint_trajectory',
             'trajectory_msgs/JointTrajectory',
             '{joint_names:["joint1","joint2","joint3","joint4","joint5","joint6"],'
-            ' points:[{positions:[3.139,3.317,3.567,2.097,3.141,5.809], time_from_start:{sec:8,nanosec:0}}]}'
+            ' points:[{positions:[3.139,3.317,3.567,2.097,0.0,0.0], time_from_start:{sec: 8, nanosec: 0}}]}'
         ],
         output='screen',
         condition=None,

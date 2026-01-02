@@ -36,8 +36,8 @@ HOME_POSE_RAD = {
     "joint2": 3.132,
     "joint3": 3.132,
     "joint4": 3.142,
-    "joint5": 2.897,
-    "joint6": 5.809,
+    "joint5": 0.0,
+    "joint6": 5.81,  # neutral/closed (~333 deg) within 85-345 deg limit
 }
 
 READY_POSE_RAD = {
@@ -45,8 +45,8 @@ READY_POSE_RAD = {
     "joint2": 3.317,
     "joint3": 3.567,
     "joint4": 2.097,
-    "joint5": 3.141,
-    "joint6": 5.809,
+    "joint5": 0.0,
+    "joint6": 5.81,  # same neutral/closed value
 }
 
 

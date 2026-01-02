@@ -2,7 +2,7 @@
 
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-  <xacro:macro name="rparm_arm" params="prefix=''">
+  <xacro:macro name="rparm_arm" params="prefix='' use_sim:='false'">
 
     <xacro:property
       name="meshes_file_direction"
@@ -76,7 +76,7 @@
       <child link="${prefix}link3"/>
       <origin xyz="0.0 0.0 0.0595" rpy="0 0 0"/>
       <axis xyz="0 1 0"/>
-      <limit velocity="4.8" effort="1000" lower="${-1.5}" upper="${1.5}" />
+      <limit velocity="4.8" effort="1000" lower="${-pi}" upper="${pi}" />
       <dynamics damping="0.1"/>
     </joint>
 
@@ -112,7 +112,7 @@
       <child link="${prefix}link4"/>
       <origin xyz="0.024 0 0.128" rpy="0 0 0"/>
       <axis xyz="0 1 0"/>
-      <limit velocity="4.8" effort="1000" lower="${-1.5}" upper="${1.4}" />
+      <limit velocity="4.8" effort="1000" lower="${-pi}" upper="${pi}" />
       <dynamics damping="0.1"/>
     </joint>
 
@@ -148,7 +148,7 @@
       <child link="${prefix}link5"/>
       <origin xyz="0.124 0.0 0.0" rpy="0 0 0"/>
       <axis xyz="0 1 0"/>
-      <limit velocity="4.8" effort="1000" lower="${-1.7}" upper="${1.97}" />
+      <limit velocity="4.8" effort="1000" lower="${-pi}" upper="${pi}" />
       <dynamics damping="0.1"/>
     </joint>
 
@@ -179,12 +179,21 @@
       </inertial>
     </link>
 
-    <joint name="${prefix}gripper_left_joint" type="prismatic">
+    <!-- Wrist roll placeholder (future servo). Keep zero range so commands stay at 0. -->
+    <link name="${prefix}link5_roll">
+      <inertial>
+        <origin xyz="0 0 0" />
+        <mass value="1.0e-04" />
+        <inertia ixx="1.0e-06" ixy="0.0" ixz="0.0" iyy="1.0e-06" iyz="0.0" izz="1.0e-06" />
+      </inertial>
+    </link>
+
+    <joint name="${prefix}joint5" type="revolute">
       <parent link="${prefix}link5"/>
-      <child link="${prefix}gripper_left_link"/>
-      <origin xyz="0.0817 0.021 0.0" rpy="0 0 0"/>
-      <axis xyz="0 1 0"/>
-      <limit velocity="4.8" effort="1000" lower="-0.011" upper="0.02" />
+      <child link="${prefix}link5_roll"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <axis xyz="0 0 1"/>
+      <limit velocity="4.8" effort="1000" lower="0" upper="0" />
       <dynamics damping="0.1"/>
     </joint>
 
@@ -215,15 +224,38 @@
       </inertial>
     </link>
 
-    <joint name="${prefix}gripper_right_joint" type="prismatic">
-      <parent link="${prefix}link5"/>
-      <child link="${prefix}gripper_right_link"/>
-      <origin xyz="0.0817 -0.021 0" rpy="0 0 0"/>
-      <axis xyz="0 -1 0"/>
+    <joint name="${prefix}joint6" type="prismatic">
+      <parent link="${prefix}link5_roll"/>
+      <child link="${prefix}gripper_left_link"/>
+      <origin xyz="0.0817 0.021 0.0" rpy="0 0 0"/>
+      <axis xyz="0 1 0"/>
       <limit velocity="4.8" effort="1000" lower="-0.011" upper="0.02" />
-      <dynamics damping="0.7"/>
-      <mimic joint="${prefix}gripper_left_joint" multiplier="1"/>
+      <dynamics damping="0.1"/>
     </joint>
+
+    <xacro:if value="${use_sim}">
+      <!-- Sim: control right finger independently (no mimic) so ros2_control can drive both. -->
+      <joint name="${prefix}gripper_right_joint" type="prismatic">
+        <parent link="${prefix}link5_roll"/>
+        <child link="${prefix}gripper_right_link"/>
+        <origin xyz="0.0817 -0.021 0" rpy="0 0 0"/>
+        <axis xyz="0 -1 0"/>
+        <limit velocity="4.8" effort="1000" lower="-0.011" upper="0.02" />
+        <dynamics damping="0.7"/>
+      </joint>
+    </xacro:if>
+    <xacro:unless value="${use_sim}">
+      <!-- Hardware: keep mimic description (handled in bridge) -->
+      <joint name="${prefix}gripper_right_joint" type="prismatic">
+        <parent link="${prefix}link5_roll"/>
+        <child link="${prefix}gripper_right_link"/>
+        <origin xyz="0.0817 -0.021 0" rpy="0 0 0"/>
+        <axis xyz="0 -1 0"/>
+        <limit velocity="4.8" effort="1000" lower="-0.011" upper="0.02" />
+        <dynamics damping="0.7"/>
+        <mimic joint="${prefix}joint6" multiplier="1"/>
+      </joint>
+    </xacro:unless>
 
     <link name="${prefix}gripper_right_link">
       <visual>

@@ -9,8 +9,6 @@
       arm_controller:
         type: joint_trajectory_controller/JointTrajectoryController
 
-      gripper_controller:
-        type: position_controllers/GripperActionController
 
 /**:
   arm_controller:
@@ -20,6 +18,9 @@
         - joint2
         - joint3
         - joint4
+        - joint5
+        - joint6
+        - gripper_right_joint
 
       interface_name: position
 
@@ -32,7 +33,3 @@
 
       allow_partial_joints_goal: true
 
-/**:
-  gripper_controller:
-    ros__parameters:
-      joint: gripper_left_joint
