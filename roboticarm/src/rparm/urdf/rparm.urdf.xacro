@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<robot name="rparm" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:arg name="prefix" default="" />
+  <xacro:arg name="use_sim" default="true" />
+  <xacro:arg name="use_fake_hardware" default="false" />
+  <xacro:arg name="fake_sensor_commands" default="false" />
+  <xacro:arg name="port_name" default="/dev/ttyUSB0" />
+  <xacro:arg name="ros2_control_type" default="rparm_position" />
+  <xacro:arg name="hardware_plugin" default="dynamixel_hardware_interface/DynamixelHardware" />
+
+  <xacro:include filename="$(find rparm)/gazebo/rparm.gazebo.xacro" />
+  <xacro:include filename="$(find rparm)/urdf/rparm_arm.urdf.xacro" />
+  <xacro:include filename="$(find rparm)/ros2_control/$(arg ros2_control_type).ros2_control.xacro" />
+
+  <link name="world"/>
+
+  <joint name="$(arg prefix)world_fixed" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="world"/>
+    <child link="$(arg prefix)link1"/>
+  </joint>
+
+  <xacro:rparm_arm prefix="$(arg prefix)" />
+  <xacro:rparm_gazebo prefix="$(arg prefix)" />
+
+  <xacro:rparm_system
+    name="RparmSystem" prefix="$(arg prefix)" use_sim="$(arg use_sim)"
+    use_fake_hardware="$(arg use_fake_hardware)"
+    fake_sensor_commands="$(arg fake_sensor_commands)"
+    port_name="$(arg port_name)"
+    hardware_plugin="$(arg hardware_plugin)" />
+
+  <gazebo>
+    <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+      <parameters>$(find rparm)/config/hardware_controller_manager.yaml</parameters>
+    </plugin>
+  </gazebo>
+
+</robot>
