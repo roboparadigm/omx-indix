@@ -17,7 +17,19 @@ cd /root/ros2_ws/src/open_manipulator/roboticarm/src/teleop
 python3 arm_nudge.py --mode nudge
 
 
+===============================================================
+Use rsync from the source folder to the target, excluding build artifacts:
 
+rsync -av --delete \
+  --exclude 'build/' --exclude 'install/' --exclude 'log/' --exclude '.git/' \
+  /home/mahesh/Music/Robotics/open_manipulator/roboticarm/ \
+  /home/mahesh/Music/Robotics/omx-indix/roboticarm/
+
+Notes:
+The trailing / on the source ensures contents are synced into the target folder.
+--delete removes files in the target that were removed in the source; omit it if you don’t want that.
+Run from any directory; paths are absolute.
+===============================================================
 
 
 
